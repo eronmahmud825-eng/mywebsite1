@@ -12,10 +12,10 @@
 <body>
 
   <!-- SPLASH SCREEN -->
-  <div id="splash-screen" class="screen active">
+  <div id="splash-screen" class="screen" style="display:flex;">
     <div class="splash-inner">
       <div class="splash-logo">
-        <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="logo-icon" viewBox="0 0 48 48" fill="none">
           <circle cx="24" cy="24" r="22" stroke="white" stroke-width="2.5" fill="none" opacity="0.3"/>
           <path d="M14 30 C14 30 18 18 24 18 C30 18 34 30 34 30" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
           <circle cx="24" cy="15" r="3" fill="white"/>
@@ -31,7 +31,7 @@
   </div>
 
   <!-- ONBOARDING SCREEN -->
-  <div id="onboarding-screen" class="screen">
+  <div id="onboarding-screen" class="screen" style="display:none;">
     <div class="onboarding-split">
       <div class="onboarding-visual">
         <div class="visual-content">
@@ -69,7 +69,6 @@
             <label for="user-name">Your name</label>
             <input type="text" id="user-name" placeholder="e.g. Sarah" autocomplete="off" />
           </div>
-
           <div class="field-row">
             <div class="field-group">
               <label for="start-weight">Starting weight</label>
@@ -86,7 +85,6 @@
               </div>
             </div>
           </div>
-
           <div class="field-group">
             <label for="goal-weight">Goal weight</label>
             <div class="input-with-unit">
@@ -94,12 +92,10 @@
               <span class="unit-badge">kg</span>
             </div>
           </div>
-
           <button class="btn-primary" id="start-btn">
             <span>Start tracking</span>
             <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-
           <p class="form-note" id="form-error"></p>
         </div>
       </div>
@@ -107,7 +103,7 @@
   </div>
 
   <!-- DASHBOARD SCREEN -->
-  <div id="dashboard-screen" class="screen">
+  <div id="dashboard-screen" class="screen" style="display:none;">
     <nav class="topnav">
       <div class="nav-logo">
         <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--accent)" stroke-width="2" fill="none" opacity="0.3"/><path d="M7 15 C7 15 9 9 12 9 C15 9 17 15 17 15" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="7" r="1.5" fill="var(--accent)"/></svg>
@@ -119,10 +115,9 @@
     </nav>
 
     <main class="dashboard-main">
-      <!-- Profile Card -->
       <section class="profile-card">
         <div class="profile-info">
-          <div class="avatar" id="avatar-circle">S</div>
+          <div class="avatar" id="avatar-circle">?</div>
           <div class="profile-text">
             <h2 id="profile-name">Loading...</h2>
             <span class="profile-meta" id="profile-meta">—</span>
@@ -136,7 +131,6 @@
         </div>
       </section>
 
-      <!-- Stats Row -->
       <section class="stats-row">
         <div class="stat-card">
           <span class="stat-label">Start weight</span>
@@ -156,7 +150,6 @@
         </div>
       </section>
 
-      <!-- Today's Entry -->
       <section class="today-section">
         <div class="today-header">
           <div>
@@ -168,7 +161,6 @@
             <span>Live</span>
           </div>
         </div>
-
         <div class="today-form" id="today-form">
           <div class="today-inputs">
             <div class="field-group">
@@ -200,7 +192,6 @@
         </div>
       </section>
 
-      <!-- History Timeline -->
       <section class="history-section">
         <h3 class="section-title">History</h3>
         <div class="history-timeline" id="history-timeline">
