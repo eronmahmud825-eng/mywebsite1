@@ -661,3 +661,22 @@ input { background: none; border: none; outline: none; color: var(--text); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ── Screen visibility (replaces old .screen system) ── */
+.hidden { display: none !important; }
+.splash-visible {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: linear-gradient(135deg, #0a0f1a 0%, #0e1a2e 50%, #091a17 100%);
+}
+#onboarding-screen, #dashboard-screen {
+  position: relative;
+  min-height: 100vh;
+  overflow-y: auto;
+}
