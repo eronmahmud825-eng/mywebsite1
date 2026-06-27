@@ -8,11 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Firebase MUST load before app.js -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
 </head>
 <body>
 
-  <!-- SPLASH SCREEN -->
-  <div id="splash-screen" class="screen" style="display:flex;">
+  <!-- SPLASH -->
+  <div id="splash-screen" class="screen splash-visible">
     <div class="splash-inner">
       <div class="splash-logo">
         <svg class="logo-icon" viewBox="0 0 48 48" fill="none">
@@ -24,14 +29,12 @@
         <span class="logo-text">LeanLog</span>
       </div>
       <p class="splash-tagline">Your journey, measured.</p>
-      <div class="splash-loader">
-        <div class="splash-loader-bar"></div>
-      </div>
+      <div class="splash-loader"><div class="splash-loader-bar"></div></div>
     </div>
   </div>
 
-  <!-- ONBOARDING SCREEN -->
-  <div id="onboarding-screen" class="screen" style="display:none;">
+  <!-- ONBOARDING -->
+  <div id="onboarding-screen" class="screen hidden">
     <div class="onboarding-split">
       <div class="onboarding-visual">
         <div class="visual-content">
@@ -54,7 +57,6 @@
           </div>
         </div>
       </div>
-
       <div class="onboarding-form-side">
         <div class="form-header">
           <div class="mini-logo">
@@ -63,7 +65,6 @@
           <h1 class="form-title">Get started</h1>
           <p class="form-subtitle">Tell us a little about you to personalize your experience.</p>
         </div>
-
         <div class="form-card">
           <div class="field-group">
             <label for="user-name">Your name</label>
@@ -102,8 +103,8 @@
     </div>
   </div>
 
-  <!-- DASHBOARD SCREEN -->
-  <div id="dashboard-screen" class="screen" style="display:none;">
+  <!-- DASHBOARD -->
+  <div id="dashboard-screen" class="screen hidden">
     <nav class="topnav">
       <div class="nav-logo">
         <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--accent)" stroke-width="2" fill="none" opacity="0.3"/><path d="M7 15 C7 15 9 9 12 9 C15 9 17 15 17 15" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="7" r="1.5" fill="var(--accent)"/></svg>
@@ -113,7 +114,6 @@
         <svg viewBox="0 0 20 20" fill="none"><path d="M13 7l3 3-3 3M16 10H8M10 4H5a1 1 0 00-1 1v10a1 1 0 001 1h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </nav>
-
     <main class="dashboard-main">
       <section class="profile-card">
         <div class="profile-info">
@@ -130,26 +130,12 @@
           </div>
         </div>
       </section>
-
       <section class="stats-row">
-        <div class="stat-card">
-          <span class="stat-label">Start weight</span>
-          <span class="stat-value" id="stat-start">—</span>
-        </div>
-        <div class="stat-card accent-card">
-          <span class="stat-label">Current weight</span>
-          <span class="stat-value" id="stat-current">—</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Goal weight</span>
-          <span class="stat-value" id="stat-goal">—</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Days tracked</span>
-          <span class="stat-value" id="stat-days">—</span>
-        </div>
+        <div class="stat-card"><span class="stat-label">Start weight</span><span class="stat-value" id="stat-start">—</span></div>
+        <div class="stat-card accent-card"><span class="stat-label">Current weight</span><span class="stat-value" id="stat-current">—</span></div>
+        <div class="stat-card"><span class="stat-label">Goal weight</span><span class="stat-value" id="stat-goal">—</span></div>
+        <div class="stat-card"><span class="stat-label">Days tracked</span><span class="stat-value" id="stat-days">—</span></div>
       </section>
-
       <section class="today-section">
         <div class="today-header">
           <div>
@@ -157,11 +143,10 @@
             <p class="today-date" id="today-date">—</p>
           </div>
           <div class="today-status" id="today-status">
-            <span class="status-dot active"></span>
-            <span>Live</span>
+            <span class="status-dot active"></span><span>Live</span>
           </div>
         </div>
-        <div class="today-form" id="today-form">
+        <div class="today-form">
           <div class="today-inputs">
             <div class="field-group">
               <label for="today-weight">Today's weight</label>
@@ -187,27 +172,22 @@
           </div>
           <div class="save-toast" id="save-toast">
             <svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Saved!
+            <span id="toast-msg">Saved!</span>
           </div>
         </div>
       </section>
-
       <section class="history-section">
         <h3 class="section-title">History</h3>
         <div class="history-timeline" id="history-timeline">
           <div class="empty-history">
             <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" stroke="var(--text-muted)" stroke-width="1.5" fill="none" opacity="0.4"/><path d="M16 28 C16 28 18 20 24 20 C30 20 32 28 32 28" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/></svg>
-            <p>No history yet. Your first saved entry will appear here.</p>
+            <p>No history yet.</p>
           </div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
