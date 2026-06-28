@@ -9,24 +9,18 @@
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Inter',sans-serif;background:#0e1117;color:#e8eaf0;min-height:100vh}
     :root{--accent:#00d4aa;--danger:#ff5f72;--card:#161b26;--border:rgba(255,255,255,0.08)}
-
-    /* ── PAGES ── */
     .page{display:none;min-height:100vh}
     .page.show{display:block}
 
-    /* ── SPLASH ── */
-    #page-splash{
-      display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#0a0f1a,#0e1a2e,#091a17);
-      position:fixed;inset:0;z-index:999
-    }
+    /* SPLASH */
+    #page-splash{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0f1a,#0e1a2e,#091a17);position:fixed;inset:0;z-index:999}
     .splash-box{text-align:center}
     .splash-title{font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-1px}
     .splash-sub{color:rgba(255,255,255,0.4);font-size:0.9rem;margin-bottom:40px;letter-spacing:0.1em;text-transform:uppercase}
     .splash-bar-wrap{width:200px;height:3px;background:rgba(255,255,255,0.1);border-radius:99px;margin:0 auto;overflow:hidden}
     .splash-bar{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width 2.5s linear}
 
-    /* ── ONBOARDING ── */
+    /* ONBOARDING */
     #page-onboard{background:#0e1117;display:none;align-items:center;justify-content:center;padding:24px}
     #page-onboard.show{display:flex}
     .form-wrap{width:100%;max-width:420px}
@@ -47,17 +41,19 @@
     .btn:hover{background:#00efc0}
     .btn:disabled{opacity:0.5;cursor:not-allowed}
     .err{color:var(--danger);font-size:0.82rem;margin-top:8px;min-height:18px}
+    .info-box{background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.2);border-radius:10px;padding:12px 16px;font-size:0.82rem;color:rgba(255,255,255,0.6);margin-bottom:20px;line-height:1.5}
 
-    /* ── DASHBOARD ── */
+    /* DASHBOARD */
     #page-dash{background:#0e1117;display:none}
     #page-dash.show{display:block}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px;background:rgba(14,17,23,0.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
     .nav-brand{font-size:1.1rem;font-weight:700;color:var(--accent)}
+    .sync-dot{width:8px;height:8px;border-radius:50%;background:#555;display:inline-block;margin-left:8px}
+    .sync-dot.online{background:var(--accent);box-shadow:0 0 6px var(--accent)}
     .nav-out{background:none;border:1px solid var(--border);color:rgba(255,255,255,0.5);padding:6px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:0.82rem}
-    .nav-out:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+    .nav-out:hover{color:#fff}
     .main{max-width:700px;margin:0 auto;padding:24px 16px 80px}
-
-    .profile-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px}
+    .profile-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
     .ava{width:48px;height:48px;background:linear-gradient(135deg,var(--accent),#00b8ff);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#031610;flex-shrink:0}
     .pname{font-size:1.1rem;font-weight:700}
     .pmeta{font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:2px}
@@ -66,14 +62,12 @@
     .badge-lbl{font-size:0.65rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em}
     .loss .badge-val{color:var(--accent)}
     .gain .badge-val{color:var(--danger)}
-
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
     .sc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
     .sc.hi{background:rgba(0,212,170,0.08);border-color:rgba(0,212,170,0.2)}
     .sl{font-size:0.68rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
     .sv{font-size:1.15rem;font-weight:700}
     .sc.hi .sv{color:var(--accent)}
-
     .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:16px}
     .card-title{font-size:1rem;font-weight:600;margin-bottom:4px}
     .card-sub{font-size:0.8rem;color:rgba(255,255,255,0.35);margin-bottom:18px}
@@ -84,7 +78,6 @@
     .hint{font-size:0.75rem;color:rgba(255,255,255,0.25);margin-top:8px}
     .toast{display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);color:var(--accent);font-size:0.82rem;font-weight:600;border-radius:99px;padding:5px 14px;margin-top:12px;opacity:0;transition:opacity 0.3s}
     .toast.show{opacity:1}
-
     .hist-title{font-size:1rem;font-weight:600;margin-bottom:14px}
     .empty{text-align:center;padding:50px 20px;color:rgba(255,255,255,0.25);font-size:0.88rem;border:1px dashed var(--border);border-radius:12px}
     .trow{display:flex;gap:12px;margin-bottom:12px}
@@ -101,11 +94,9 @@
     .tm-val{font-size:0.95rem;font-weight:600}
     .ddown{color:var(--accent);font-size:0.75rem;font-weight:700;background:rgba(0,212,170,0.1);border-radius:4px;padding:1px 5px}
     .dup{color:var(--danger);font-size:0.75rem;font-weight:700;background:rgba(255,95,114,0.1);border-radius:4px;padding:1px 5px}
-
     @media(max-width:600px){
       .stats{grid-template-columns:1fr 1fr}
       .inputs2{grid-template-columns:1fr}
-      .profile-card{flex-wrap:wrap}
       .row2{grid-template-columns:1fr}
       .tbody{gap:14px}
     }
@@ -126,7 +117,7 @@
 <div id="page-onboard" class="page">
   <div class="form-wrap">
     <h1>Get started</h1>
-    <p>Tell us about you to personalize your tracker.</p>
+    <p>Your data saves locally on this device and syncs to the cloud.</p>
     <div class="field">
       <label>Your name</label>
       <input class="plain-inp" type="text" id="f-name" placeholder="e.g. Eron" autocomplete="off"/>
@@ -153,12 +144,10 @@
 <!-- DASHBOARD -->
 <div id="page-dash" class="page">
   <nav class="nav">
-    <div class="nav-brand">LeanLog</div>
+    <div class="nav-brand">LeanLog <span class="sync-dot" id="sync-dot"></span></div>
     <button class="nav-out" id="btn-logout">Sign out</button>
   </nav>
   <div class="main">
-
-    <!-- Profile -->
     <div class="profile-card">
       <div style="display:flex;align-items:center;gap:14px">
         <div class="ava" id="d-ava">?</div>
@@ -172,16 +161,12 @@
         <div class="badge-lbl">net change</div>
       </div>
     </div>
-
-    <!-- Stats -->
     <div class="stats">
       <div class="sc"><div class="sl">Start</div><div class="sv" id="d-start">—</div></div>
       <div class="sc hi"><div class="sl">Current</div><div class="sv" id="d-cur">—</div></div>
       <div class="sc"><div class="sl">Goal</div><div class="sv" id="d-goal">—</div></div>
       <div class="sc"><div class="sl">Days</div><div class="sv" id="d-days">—</div></div>
     </div>
-
-    <!-- Today -->
     <div class="card">
       <div class="card-title">Today's entry</div>
       <div class="card-sub" id="d-today-date">—</div>
@@ -196,91 +181,173 @@
         </div>
       </div>
       <button class="save-btn" id="btn-save">✓ Save today</button>
-      <div class="hint">You can edit anytime today</div>
+      <div class="hint">Saves locally instantly, syncs to cloud when online</div>
       <div class="toast" id="toast">✓ <span id="toast-msg">Saved!</span></div>
     </div>
-
-    <!-- History -->
     <div class="hist-title">History</div>
-    <div id="d-history"><div class="empty">No history yet. Save entries to see them here.</div></div>
-
+    <div id="d-history"><div class="empty">No history yet.</div></div>
   </div>
 </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-// ── Firebase init ──────────────────────────────────
-firebase.initializeApp({
-  apiKey: "AIzaSyAcirrvSgPgb4zBkSMJg8G0WIqQdqqtOsM",
-  authDomain: "consulate-d6691.firebaseapp.com",
-  projectId: "consulate-d6691",
-  storageBucket: "consulate-d6691.firebasestorage.app",
-  messagingSenderId: "459011165720",
-  appId: "1:459011165720:web:40d50df68038219f49fd6d"
-});
-var db = firebase.firestore();
+// ═══════════════════════════════════════════════
+//  STORAGE — localStorage first, Firebase second
+// ═══════════════════════════════════════════════
 
-// ── Helpers ────────────────────────────────────────
+var LS_USER = "ll_user";
+var LS_ROWS = "ll_rows";
+
+function lsGetUser()  { try { return JSON.parse(localStorage.getItem(LS_USER)); } catch(e){ return null; } }
+function lsSetUser(u) { localStorage.setItem(LS_USER, JSON.stringify(u)); }
+function lsGetRows()  { try { return JSON.parse(localStorage.getItem(LS_ROWS)) || []; } catch(e){ return []; } }
+function lsSetRows(r) { localStorage.setItem(LS_ROWS, JSON.stringify(r)); }
+
+function getUid() {
+  var uid = localStorage.getItem("ll_uid");
+  if (!uid) { uid = "u" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); localStorage.setItem("ll_uid", uid); }
+  return uid;
+}
+
+// ═══════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════
+
 function todayKey() {
   var d = new Date();
-  return d.getFullYear() + "-" +
-    String(d.getMonth()+1).padStart(2,"0") + "-" +
-    String(d.getDate()).padStart(2,"0");
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
+
 function niceDate(key) {
   var p = key.split("-").map(Number);
   return new Date(p[0],p[1]-1,p[2]).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"});
 }
-function getUid() {
-  var uid = localStorage.getItem("ll_uid");
-  if (!uid) { uid = "u"+Date.now().toString(36); localStorage.setItem("ll_uid",uid); }
-  return uid;
-}
 
-// ── Pages ──────────────────────────────────────────
+// ═══════════════════════════════════════════════
+//  PAGES
+// ═══════════════════════════════════════════════
+
 function goTo(id) {
-  ["page-onboard","page-dash"].forEach(function(p){
-    document.getElementById(p).classList.remove("show");
-  });
+  ["page-onboard","page-dash"].forEach(function(p){ document.getElementById(p).classList.remove("show"); });
   document.getElementById(id).classList.add("show");
 }
 
-// ── State ──────────────────────────────────────────
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+
 var user = null;
 var rows = [];
+var db   = null;
+var fbOK = false;
 
-// ── Splash → Init ──────────────────────────────────
+// ═══════════════════════════════════════════════
+//  SPLASH → START
+// ═══════════════════════════════════════════════
+
 window.onload = function() {
-  // start progress bar
-  setTimeout(function(){ document.getElementById("sbar").style.width="100%"; }, 50);
-
-  // after 3s hide splash and start app
+  setTimeout(function(){ document.getElementById("sbar").style.width = "100%"; }, 50);
   setTimeout(function(){
     document.getElementById("page-splash").style.display = "none";
     startApp();
   }, 3000);
 };
 
-async function startApp() {
-  var uid = getUid();
-  try {
-    var snap = await db.collection("users").doc(uid).get();
-    if (snap.exists) {
-      user = Object.assign({id:uid}, snap.data());
-      await openDash();
-    } else {
-      goTo("page-onboard");
-    }
-  } catch(e) {
-    console.error(e);
+function startApp() {
+  // 1. Try to load from localStorage first (instant, always works)
+  var saved = lsGetUser();
+  if (saved) {
+    user = saved;
+    rows = lsGetRows();
+    openDash();
+  } else {
     goTo("page-onboard");
+  }
+
+  // 2. Try Firebase in background (non-blocking)
+  tryFirebase();
+}
+
+function tryFirebase() {
+  try {
+    if (typeof firebase === "undefined") return;
+    firebase.initializeApp({
+      apiKey: "AIzaSyAcirrvSgPgb4zBkSMJg8G0WIqQdqqtOsM",
+      authDomain: "consulate-d6691.firebaseapp.com",
+      projectId: "consulate-d6691",
+      storageBucket: "consulate-d6691.firebasestorage.app",
+      messagingSenderId: "459011165720",
+      appId: "1:459011165720:web:40d50df68038219f49fd6d"
+    });
+    db = firebase.firestore();
+    // Enable offline persistence
+    db.enablePersistence().catch(function(){});
+    fbOK = true;
+    setSyncDot(true);
+
+    // If user already loaded from LS, sync from Firebase
+    if (user) syncFromFirebase();
+  } catch(e) {
+    console.warn("Firebase unavailable:", e);
+    fbOK = false;
+    setSyncDot(false);
   }
 }
 
-// ── Onboarding ─────────────────────────────────────
-document.getElementById("btn-start").addEventListener("click", async function() {
+function setSyncDot(online) {
+  var dot = document.getElementById("sync-dot");
+  if (!dot) return;
+  dot.className = "sync-dot" + (online ? " online" : "");
+}
+
+// ═══════════════════════════════════════════════
+//  FIREBASE SYNC (background, non-blocking)
+// ═══════════════════════════════════════════════
+
+function syncFromFirebase() {
+  if (!fbOK || !db || !user) return;
+  var uid = getUid();
+
+  // Sync user profile
+  db.collection("users").doc(uid).get().then(function(snap) {
+    if (snap.exists) {
+      user = Object.assign({ id: uid }, snap.data());
+      lsSetUser(user);
+      renderProfile();
+    } else {
+      // Push local user to Firebase
+      db.collection("users").doc(uid).set({
+        name: user.name,
+        startWeight: user.startWeight,
+        height: user.height,
+        goalWeight: user.goalWeight
+      }).catch(function(e){ console.warn("FB user push:", e); });
+    }
+  }).catch(function(e){ console.warn("FB user sync:", e); });
+
+  // Sync entries
+  db.collection("users").doc(uid).collection("entries")
+    .orderBy("date","desc").get().then(function(snap) {
+      if (snap.docs.length > 0) {
+        rows = snap.docs.map(function(d){ return d.data(); });
+        lsSetRows(rows);
+        renderStats();
+        renderHistory();
+        fillTodayForm();
+      } else {
+        // Push local entries to Firebase
+        rows.forEach(function(r) {
+          db.collection("users").doc(uid).collection("entries")
+            .doc(r.date).set(r).catch(function(){});
+        });
+      }
+    }).catch(function(e){ console.warn("FB entries sync:", e); });
+}
+
+// ═══════════════════════════════════════════════
+//  ONBOARDING
+// ═══════════════════════════════════════════════
+
+document.getElementById("btn-start").addEventListener("click", function() {
   var name = document.getElementById("f-name").value.trim();
   var sw   = parseFloat(document.getElementById("f-sw").value);
   var ht   = parseFloat(document.getElementById("f-ht").value);
@@ -288,65 +355,60 @@ document.getElementById("btn-start").addEventListener("click", async function() 
   var err  = document.getElementById("f-err");
   err.textContent = "";
 
-  if (!name)              { err.textContent = "Enter your name.";           return; }
-  if (isNaN(sw)||sw<30)   { err.textContent = "Enter a valid weight.";      return; }
-  if (isNaN(ht)||ht<100)  { err.textContent = "Enter a valid height.";      return; }
-  if (isNaN(gw)||gw<30)   { err.textContent = "Enter a valid goal weight."; return; }
+  if (!name)             { err.textContent = "Enter your name.";           return; }
+  if (isNaN(sw)||sw<30)  { err.textContent = "Enter a valid weight.";      return; }
+  if (isNaN(ht)||ht<100) { err.textContent = "Enter a valid height.";      return; }
+  if (isNaN(gw)||gw<30)  { err.textContent = "Enter a valid goal weight."; return; }
 
-  var btn = document.getElementById("btn-start");
-  btn.disabled = true;
-  btn.querySelector("span").textContent = "Saving...";
+  // Save locally INSTANTLY — no waiting for Firebase
+  user = { id: getUid(), name: name, startWeight: sw, height: ht, goalWeight: gw };
+  rows = [];
+  lsSetUser(user);
+  lsSetRows(rows);
 
-  try {
-    var uid  = getUid();
-    var data = { name:name, startWeight:sw, height:ht, goalWeight:gw };
-    await db.collection("users").doc(uid).set(data);
-    user = Object.assign({id:uid}, data);
-    await openDash();
-  } catch(e) {
-    console.error(e);
-    err.textContent = "Could not save — check your internet.";
-    btn.disabled = false;
-    btn.querySelector("span").textContent = "Start tracking →";
+  // Open dashboard right away
+  openDash();
+
+  // Try to save to Firebase in background
+  if (fbOK && db) {
+    db.collection("users").doc(user.id).set({
+      name: name, startWeight: sw, height: ht, goalWeight: gw
+    }).catch(function(e){ console.warn("FB save user:", e); });
   }
 });
 
-// ── Dashboard ──────────────────────────────────────
-async function openDash() {
+// ═══════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════
+
+function openDash() {
   goTo("page-dash");
   renderProfile();
-  await loadEntries();
+  renderStats();
+  renderHistory();
   fillTodayForm();
 }
 
 function renderProfile() {
+  if (!user) return;
   document.getElementById("d-ava").textContent  = user.name.charAt(0).toUpperCase();
   document.getElementById("d-name").textContent = user.name;
-  var bmi = (user.startWeight / Math.pow(user.height/100,2)).toFixed(1);
-  document.getElementById("d-meta").textContent = user.height+"cm · BMI "+bmi+" at start";
-  document.getElementById("d-start").textContent = user.startWeight+" kg";
-  document.getElementById("d-goal").textContent  = user.goalWeight+" kg";
-}
-
-async function loadEntries() {
-  try {
-    var snap = await db.collection("users").doc(user.id)
-      .collection("entries").orderBy("date","desc").get();
-    rows = snap.docs.map(function(d){ return d.data(); });
-    renderStats();
-    renderHistory();
-  } catch(e) { console.error(e); }
+  var bmi = (user.startWeight / Math.pow(user.height/100, 2)).toFixed(1);
+  document.getElementById("d-meta").textContent = user.height + " cm · BMI " + bmi + " at start";
+  document.getElementById("d-start").textContent = user.startWeight + " kg";
+  document.getElementById("d-goal").textContent  = user.goalWeight  + " kg";
 }
 
 function renderStats() {
   document.getElementById("d-days").textContent = rows.length;
   var latest = rows.find(function(r){ return r.weight; });
-  var cw = latest ? latest.weight : user.startWeight;
-  document.getElementById("d-cur").textContent = cw+" kg";
+  var cw = latest ? latest.weight : (user ? user.startWeight : 0);
+  document.getElementById("d-cur").textContent = cw + " kg";
+  if (!user) return;
   var delta = +(cw - user.startWeight).toFixed(1);
+  document.getElementById("d-delta").textContent = (delta > 0 ? "+" : "") + delta + " kg";
   var badge = document.getElementById("d-badge");
-  document.getElementById("d-delta").textContent = (delta>0?"+":"")+delta+" kg";
-  badge.className = "badge "+(delta<0?"loss":delta>0?"gain":"");
+  badge.className = "badge " + (delta < 0 ? "loss" : delta > 0 ? "gain" : "");
 }
 
 function renderHistory() {
@@ -354,16 +416,16 @@ function renderHistory() {
   var past  = rows.filter(function(r){ return r.date !== today; });
   var cont  = document.getElementById("d-history");
   if (!past.length) {
-    cont.innerHTML = '<div class="empty">No past entries yet. Save today\'s entry — it will appear here tomorrow.</div>';
+    cont.innerHTML = '<div class="empty">No past entries yet. Today\'s entry appears here tomorrow.</div>';
     return;
   }
   var asc = past.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
   cont.innerHTML = past.map(function(r, idx) {
-    var ai  = asc.findIndex(function(x){ return x.date===r.date; });
-    var pw  = ai>0 ? (asc[ai-1].weight||user.startWeight) : user.startWeight;
-    var dv  = r.weight!=null ? +(r.weight-pw).toFixed(1) : null;
-    var ds  = dv!=null ? '<span class="'+(dv<0?"ddown":dv>0?"dup":"ddown")+'">'+(dv>0?"+":"")+dv+" kg</span>" : "";
-    var isF = idx === past.length-1;
+    var ai  = asc.findIndex(function(x){ return x.date === r.date; });
+    var pw  = ai > 0 ? (asc[ai-1].weight || user.startWeight) : user.startWeight;
+    var dv  = r.weight != null ? +(r.weight - pw).toFixed(1) : null;
+    var ds  = dv != null ? '<span class="'+(dv<=0?"ddown":"dup")+'">'+(dv>0?"+":"")+dv+" kg</span>" : "";
+    var isF = idx === past.length - 1;
     return '<div class="trow">'+
       '<div class="tl-side"><div class="tdot'+(isF?" first":"")+'"></div>'+(isF?"":'<div class="tline"></div>')+'</div>'+
       '<div class="tcard">'+
@@ -379,27 +441,26 @@ function renderHistory() {
 function fillTodayForm() {
   var today = todayKey();
   document.getElementById("d-today-date").textContent = niceDate(today);
-  var te = rows.find(function(r){ return r.date===today; });
+  var te = rows.find(function(r){ return r.date === today; });
   if (te) {
-    if (te.weight!=null)   document.getElementById("t-w").value = te.weight;
-    if (te.calories!=null) document.getElementById("t-c").value = te.calories;
+    if (te.weight   != null) document.getElementById("t-w").value = te.weight;
+    if (te.calories != null) document.getElementById("t-c").value = te.calories;
   }
 }
 
-// ── Save today ─────────────────────────────────────
-document.getElementById("btn-save").addEventListener("click", async function() {
+// ═══════════════════════════════════════════════
+//  SAVE TODAY
+// ═══════════════════════════════════════════════
+
+document.getElementById("btn-save").addEventListener("click", function() {
   var w = parseFloat(document.getElementById("t-w").value);
   var c = parseFloat(document.getElementById("t-c").value);
-  if (isNaN(w) && isNaN(c)) { toast("Enter weight or calories first."); return; }
+  if (isNaN(w) && isNaN(c)) { showToast("Enter weight or calories first."); return; }
 
-  var btn   = document.getElementById("btn-save");
-  var today = todayKey();
-  btn.disabled = true;
-  btn.textContent = "Saving...";
-
+  var today  = todayKey();
   var past   = rows.filter(function(r){ return r.date < today; });
-  var exists = rows.find(function(r){ return r.date===today; });
-  var dayNum = exists ? (exists.dayNumber||past.length+1) : past.length+1;
+  var exists = rows.find(function(r){ return r.date === today; });
+  var dayNum = exists ? (exists.dayNumber || past.length + 1) : past.length + 1;
 
   var data = {
     date:      today,
@@ -408,43 +469,50 @@ document.getElementById("btn-save").addEventListener("click", async function() {
     dayNumber: dayNum
   };
 
-  try {
-    await db.collection("users").doc(user.id)
-      .collection("entries").doc(today).set(data, {merge:true});
+  // Save to localStorage INSTANTLY
+  var i = rows.findIndex(function(r){ return r.date === today; });
+  if (i >= 0) rows[i] = Object.assign({}, rows[i], data);
+  else        rows.unshift(data);
+  lsSetRows(rows);
 
-    var i = rows.findIndex(function(r){ return r.date===today; });
-    if (i>=0) rows[i] = Object.assign({},rows[i],data);
-    else      rows.unshift(data);
+  renderStats();
+  renderHistory();
+  showToast("Saved!");
 
-    renderStats();
-    renderHistory();
-    fillTodayForm();
-    toast("Saved!");
-  } catch(e) {
-    console.error(e);
-    toast("Save failed — check internet.");
+  // Try Firebase in background
+  if (fbOK && db && user) {
+    db.collection("users").doc(user.id).collection("entries")
+      .doc(today).set(data, { merge: true })
+      .then(function(){ setSyncDot(true); })
+      .catch(function(e){ console.warn("FB entry save:", e); setSyncDot(false); });
   }
-
-  btn.disabled = false;
-  btn.textContent = "✓ Save today";
 });
 
-function toast(msg) {
+function showToast(msg) {
   document.getElementById("toast-msg").textContent = msg;
   var t = document.getElementById("toast");
   t.classList.add("show");
   setTimeout(function(){ t.classList.remove("show"); }, 2500);
 }
 
-// ── Logout ─────────────────────────────────────────
+// ═══════════════════════════════════════════════
+//  LOGOUT
+// ═══════════════════════════════════════════════
+
 document.getElementById("btn-logout").addEventListener("click", function() {
-  if (!confirm("Sign out?")) return;
+  if (!confirm("Sign out? Your data stays saved on this device.")) return;
   localStorage.removeItem("ll_uid");
+  localStorage.removeItem(LS_USER);
+  localStorage.removeItem(LS_ROWS);
   user = null; rows = [];
-  ["f-name","f-sw","f-ht","f-gw"].forEach(function(id){ document.getElementById(id).value=""; });
+  ["f-name","f-sw","f-ht","f-gw"].forEach(function(id){ document.getElementById(id).value = ""; });
   document.getElementById("f-err").textContent = "";
   goTo("page-onboard");
 });
 </script>
+
+<!-- Firebase (loads after page, non-blocking) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </body>
 </html>
