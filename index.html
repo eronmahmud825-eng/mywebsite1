@@ -1,193 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeanLog — Weight Loss Tracker</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LeanLog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:#0e1117;color:#e8eaf0;min-height:100vh}
+    :root{--accent:#00d4aa;--danger:#ff5f72;--card:#161b26;--border:rgba(255,255,255,0.08)}
 
-  <!-- Firebase MUST load before app.js -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
+    /* ── PAGES ── */
+    .page{display:none;min-height:100vh}
+    .page.show{display:block}
+
+    /* ── SPLASH ── */
+    #page-splash{
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#0a0f1a,#0e1a2e,#091a17);
+      position:fixed;inset:0;z-index:999
+    }
+    .splash-box{text-align:center}
+    .splash-title{font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-1px}
+    .splash-sub{color:rgba(255,255,255,0.4);font-size:0.9rem;margin-bottom:40px;letter-spacing:0.1em;text-transform:uppercase}
+    .splash-bar-wrap{width:200px;height:3px;background:rgba(255,255,255,0.1);border-radius:99px;margin:0 auto;overflow:hidden}
+    .splash-bar{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width 2.5s linear}
+
+    /* ── ONBOARDING ── */
+    #page-onboard{background:#0e1117;display:none;align-items:center;justify-content:center;padding:24px}
+    #page-onboard.show{display:flex}
+    .form-wrap{width:100%;max-width:420px}
+    .form-wrap h1{font-size:1.8rem;font-weight:700;margin-bottom:6px}
+    .form-wrap p{color:rgba(255,255,255,0.45);font-size:0.9rem;margin-bottom:28px}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .inp-wrap{display:flex;align-items:center;background:#1c2333;border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+    .inp-wrap:focus-within{border-color:var(--accent)}
+    .inp-wrap input{flex:1;background:none;border:none;outline:none;color:#e8eaf0;padding:12px 14px;font-size:0.95rem;font-family:inherit;width:0}
+    .inp-wrap input::placeholder{color:rgba(255,255,255,0.2)}
+    .inp-wrap span{padding:0 12px;font-size:0.75rem;color:rgba(255,255,255,0.3);border-left:1px solid var(--border);white-space:nowrap}
+    .plain-inp{width:100%;background:#1c2333;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:#e8eaf0;font-size:0.95rem;font-family:inherit;outline:none}
+    .plain-inp:focus{border-color:var(--accent)}
+    .plain-inp::placeholder{color:rgba(255,255,255,0.2)}
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--accent);color:#031610;font-weight:700;font-size:1rem;border:none;border-radius:10px;cursor:pointer;font-family:inherit;margin-top:8px}
+    .btn:hover{background:#00efc0}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .err{color:var(--danger);font-size:0.82rem;margin-top:8px;min-height:18px}
+
+    /* ── DASHBOARD ── */
+    #page-dash{background:#0e1117;display:none}
+    #page-dash.show{display:block}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px;background:rgba(14,17,23,0.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
+    .nav-brand{font-size:1.1rem;font-weight:700;color:var(--accent)}
+    .nav-out{background:none;border:1px solid var(--border);color:rgba(255,255,255,0.5);padding:6px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:0.82rem}
+    .nav-out:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+    .main{max-width:700px;margin:0 auto;padding:24px 16px 80px}
+
+    .profile-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px}
+    .ava{width:48px;height:48px;background:linear-gradient(135deg,var(--accent),#00b8ff);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#031610;flex-shrink:0}
+    .pname{font-size:1.1rem;font-weight:700}
+    .pmeta{font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:2px}
+    .badge{text-align:center;background:#1c2333;border:1.5px solid var(--border);border-radius:12px;padding:10px 18px;min-width:100px}
+    .badge-val{font-size:1.4rem;font-weight:800}
+    .badge-lbl{font-size:0.65rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em}
+    .loss .badge-val{color:var(--accent)}
+    .gain .badge-val{color:var(--danger)}
+
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+    .sc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+    .sc.hi{background:rgba(0,212,170,0.08);border-color:rgba(0,212,170,0.2)}
+    .sl{font-size:0.68rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+    .sv{font-size:1.15rem;font-weight:700}
+    .sc.hi .sv{color:var(--accent)}
+
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:16px}
+    .card-title{font-size:1rem;font-weight:600;margin-bottom:4px}
+    .card-sub{font-size:0.8rem;color:rgba(255,255,255,0.35);margin-bottom:18px}
+    .inputs2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+    .save-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;background:var(--accent);color:#031610;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-size:0.95rem}
+    .save-btn:hover{background:#00efc0}
+    .save-btn:disabled{opacity:0.5;cursor:not-allowed}
+    .hint{font-size:0.75rem;color:rgba(255,255,255,0.25);margin-top:8px}
+    .toast{display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);color:var(--accent);font-size:0.82rem;font-weight:600;border-radius:99px;padding:5px 14px;margin-top:12px;opacity:0;transition:opacity 0.3s}
+    .toast.show{opacity:1}
+
+    .hist-title{font-size:1rem;font-weight:600;margin-bottom:14px}
+    .empty{text-align:center;padding:50px 20px;color:rgba(255,255,255,0.25);font-size:0.88rem;border:1px dashed var(--border);border-radius:12px}
+    .trow{display:flex;gap:12px;margin-bottom:12px}
+    .tl-side{display:flex;flex-direction:column;align-items:center;padding-top:18px}
+    .tdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0}
+    .tdot.first{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+    .tline{width:2px;flex:1;background:var(--border);margin-top:4px;min-height:16px}
+    .tcard{flex:1;background:#1c2333;border:1px solid var(--border);border-radius:12px;padding:14px 18px}
+    .thead{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+    .tday{font-size:0.78rem;font-weight:700;color:var(--accent);background:rgba(0,212,170,0.1);border-radius:6px;padding:2px 8px}
+    .tdate{font-size:0.75rem;color:rgba(255,255,255,0.35)}
+    .tbody{display:flex;gap:24px;flex-wrap:wrap}
+    .tm-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.3);margin-bottom:2px}
+    .tm-val{font-size:0.95rem;font-weight:600}
+    .ddown{color:var(--accent);font-size:0.75rem;font-weight:700;background:rgba(0,212,170,0.1);border-radius:4px;padding:1px 5px}
+    .dup{color:var(--danger);font-size:0.75rem;font-weight:700;background:rgba(255,95,114,0.1);border-radius:4px;padding:1px 5px}
+
+    @media(max-width:600px){
+      .stats{grid-template-columns:1fr 1fr}
+      .inputs2{grid-template-columns:1fr}
+      .profile-card{flex-wrap:wrap}
+      .row2{grid-template-columns:1fr}
+      .tbody{gap:14px}
+    }
+  </style>
 </head>
 <body>
 
-  <!-- SPLASH -->
-  <div id="splash-screen" class="screen splash-visible">
-    <div class="splash-inner">
-      <div class="splash-logo">
-        <svg class="logo-icon" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="24" r="22" stroke="white" stroke-width="2.5" fill="none" opacity="0.3"/>
-          <path d="M14 30 C14 30 18 18 24 18 C30 18 34 30 34 30" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-          <circle cx="24" cy="15" r="3" fill="white"/>
-          <path d="M20 34 L24 26 L28 34" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-        <span class="logo-text">LeanLog</span>
-      </div>
-      <p class="splash-tagline">Your journey, measured.</p>
-      <div class="splash-loader"><div class="splash-loader-bar"></div></div>
-    </div>
+<!-- SPLASH -->
+<div id="page-splash">
+  <div class="splash-box">
+    <div class="splash-title">LeanLog</div>
+    <div class="splash-sub">Your journey, measured.</div>
+    <div class="splash-bar-wrap"><div class="splash-bar" id="sbar"></div></div>
   </div>
+</div>
 
-  <!-- ONBOARDING -->
-  <div id="onboarding-screen" class="screen hidden">
-    <div class="onboarding-split">
-      <div class="onboarding-visual">
-        <div class="visual-content">
-          <div class="visual-stat">
-            <span class="vs-num">-12.4</span>
-            <span class="vs-unit">kg lost</span>
-          </div>
-          <div class="visual-stat secondary">
-            <span class="vs-num">47</span>
-            <span class="vs-unit">days tracked</span>
-          </div>
-          <div class="visual-bars">
-            <div class="vbar" style="height:60%"></div>
-            <div class="vbar" style="height:75%"></div>
-            <div class="vbar" style="height:65%"></div>
-            <div class="vbar active" style="height:82%"></div>
-            <div class="vbar" style="height:88%"></div>
-            <div class="vbar" style="height:72%"></div>
-            <div class="vbar" style="height:55%"></div>
-          </div>
-        </div>
+<!-- ONBOARDING -->
+<div id="page-onboard" class="page">
+  <div class="form-wrap">
+    <h1>Get started</h1>
+    <p>Tell us about you to personalize your tracker.</p>
+    <div class="field">
+      <label>Your name</label>
+      <input class="plain-inp" type="text" id="f-name" placeholder="e.g. Eron" autocomplete="off"/>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Starting weight</label>
+        <div class="inp-wrap"><input type="number" id="f-sw" placeholder="85.0" step="0.1" min="30" max="300"/><span>kg</span></div>
       </div>
-      <div class="onboarding-form-side">
-        <div class="form-header">
-          <div class="mini-logo">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--accent)" stroke-width="2" fill="none" opacity="0.3"/><path d="M7 15 C7 15 9 9 12 9 C15 9 17 15 17 15" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="7" r="1.5" fill="var(--accent)"/></svg>
-          </div>
-          <h1 class="form-title">Get started</h1>
-          <p class="form-subtitle">Tell us a little about you to personalize your experience.</p>
-        </div>
-        <div class="form-card">
-          <div class="field-group">
-            <label for="user-name">Your name</label>
-            <input type="text" id="user-name" placeholder="e.g. Sarah" autocomplete="off" />
-          </div>
-          <div class="field-row">
-            <div class="field-group">
-              <label for="start-weight">Starting weight</label>
-              <div class="input-with-unit">
-                <input type="number" id="start-weight" placeholder="85.0" step="0.1" min="30" max="300" />
-                <span class="unit-badge">kg</span>
-              </div>
-            </div>
-            <div class="field-group">
-              <label for="start-height">Height</label>
-              <div class="input-with-unit">
-                <input type="number" id="start-height" placeholder="170" step="1" min="100" max="250" />
-                <span class="unit-badge">cm</span>
-              </div>
-            </div>
-          </div>
-          <div class="field-group">
-            <label for="goal-weight">Goal weight</label>
-            <div class="input-with-unit">
-              <input type="number" id="goal-weight" placeholder="70.0" step="0.1" min="30" max="300" />
-              <span class="unit-badge">kg</span>
-            </div>
-          </div>
-          <button class="btn-primary" id="start-btn">
-            <span>Start tracking</span>
-            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <p class="form-note" id="form-error"></p>
-        </div>
+      <div class="field">
+        <label>Height</label>
+        <div class="inp-wrap"><input type="number" id="f-ht" placeholder="175" step="1" min="100" max="250"/><span>cm</span></div>
       </div>
     </div>
+    <div class="field">
+      <label>Goal weight</label>
+      <div class="inp-wrap"><input type="number" id="f-gw" placeholder="70.0" step="0.1" min="30" max="300"/><span>kg</span></div>
+    </div>
+    <button class="btn" id="btn-start"><span>Start tracking →</span></button>
+    <div class="err" id="f-err"></div>
   </div>
+</div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard-screen" class="screen hidden">
-    <nav class="topnav">
-      <div class="nav-logo">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--accent)" stroke-width="2" fill="none" opacity="0.3"/><path d="M7 15 C7 15 9 9 12 9 C15 9 17 15 17 15" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="7" r="1.5" fill="var(--accent)"/></svg>
-        <span>LeanLog</span>
+<!-- DASHBOARD -->
+<div id="page-dash" class="page">
+  <nav class="nav">
+    <div class="nav-brand">LeanLog</div>
+    <button class="nav-out" id="btn-logout">Sign out</button>
+  </nav>
+  <div class="main">
+
+    <!-- Profile -->
+    <div class="profile-card">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="ava" id="d-ava">?</div>
+        <div>
+          <div class="pname" id="d-name">—</div>
+          <div class="pmeta" id="d-meta">—</div>
+        </div>
       </div>
-      <button class="btn-icon" id="logout-btn" title="Sign out">
-        <svg viewBox="0 0 20 20" fill="none"><path d="M13 7l3 3-3 3M16 10H8M10 4H5a1 1 0 00-1 1v10a1 1 0 001 1h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </nav>
-    <main class="dashboard-main">
-      <section class="profile-card">
-        <div class="profile-info">
-          <div class="avatar" id="avatar-circle">?</div>
-          <div class="profile-text">
-            <h2 id="profile-name">Loading...</h2>
-            <span class="profile-meta" id="profile-meta">—</span>
-          </div>
-        </div>
-        <div class="badge-wrapper">
-          <div class="progress-badge badge-neutral" id="progress-badge">
-            <span class="badge-delta" id="badge-delta">— kg</span>
-            <span class="badge-label">net change</span>
-          </div>
-        </div>
-      </section>
-      <section class="stats-row">
-        <div class="stat-card"><span class="stat-label">Start weight</span><span class="stat-value" id="stat-start">—</span></div>
-        <div class="stat-card accent-card"><span class="stat-label">Current weight</span><span class="stat-value" id="stat-current">—</span></div>
-        <div class="stat-card"><span class="stat-label">Goal weight</span><span class="stat-value" id="stat-goal">—</span></div>
-        <div class="stat-card"><span class="stat-label">Days tracked</span><span class="stat-value" id="stat-days">—</span></div>
-      </section>
-      <section class="today-section">
-        <div class="today-header">
-          <div>
-            <h3 class="section-title">Today's entry</h3>
-            <p class="today-date" id="today-date">—</p>
-          </div>
-          <div class="today-status" id="today-status">
-            <span class="status-dot active"></span><span>Live</span>
-          </div>
-        </div>
-        <div class="today-form">
-          <div class="today-inputs">
-            <div class="field-group">
-              <label for="today-weight">Today's weight</label>
-              <div class="input-with-unit">
-                <input type="number" id="today-weight" placeholder="84.5" step="0.1" min="30" max="300" />
-                <span class="unit-badge">kg</span>
-              </div>
-            </div>
-            <div class="field-group">
-              <label for="today-calories">Calories consumed</label>
-              <div class="input-with-unit">
-                <input type="number" id="today-calories" placeholder="1800" step="50" min="0" max="10000" />
-                <span class="unit-badge">kcal</span>
-              </div>
-            </div>
-          </div>
-          <div class="today-actions">
-            <button class="btn-primary" id="save-today-btn">
-              <svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Save today
-            </button>
-            <p class="save-hint">You can edit until midnight</p>
-          </div>
-          <div class="save-toast" id="save-toast">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span id="toast-msg">Saved!</span>
-          </div>
-        </div>
-      </section>
-      <section class="history-section">
-        <h3 class="section-title">History</h3>
-        <div class="history-timeline" id="history-timeline">
-          <div class="empty-history">
-            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" stroke="var(--text-muted)" stroke-width="1.5" fill="none" opacity="0.4"/><path d="M16 28 C16 28 18 20 24 20 C30 20 32 28 32 28" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/></svg>
-            <p>No history yet.</p>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
+      <div class="badge" id="d-badge">
+        <div class="badge-val" id="d-delta">— kg</div>
+        <div class="badge-lbl">net change</div>
+      </div>
+    </div>
 
-  <script src="app.js"></script>
+    <!-- Stats -->
+    <div class="stats">
+      <div class="sc"><div class="sl">Start</div><div class="sv" id="d-start">—</div></div>
+      <div class="sc hi"><div class="sl">Current</div><div class="sv" id="d-cur">—</div></div>
+      <div class="sc"><div class="sl">Goal</div><div class="sv" id="d-goal">—</div></div>
+      <div class="sc"><div class="sl">Days</div><div class="sv" id="d-days">—</div></div>
+    </div>
+
+    <!-- Today -->
+    <div class="card">
+      <div class="card-title">Today's entry</div>
+      <div class="card-sub" id="d-today-date">—</div>
+      <div class="inputs2">
+        <div class="field">
+          <label>Weight</label>
+          <div class="inp-wrap"><input type="number" id="t-w" placeholder="84.5" step="0.1" min="30" max="300"/><span>kg</span></div>
+        </div>
+        <div class="field">
+          <label>Calories</label>
+          <div class="inp-wrap"><input type="number" id="t-c" placeholder="1800" step="50" min="0" max="10000"/><span>kcal</span></div>
+        </div>
+      </div>
+      <button class="save-btn" id="btn-save">✓ Save today</button>
+      <div class="hint">You can edit anytime today</div>
+      <div class="toast" id="toast">✓ <span id="toast-msg">Saved!</span></div>
+    </div>
+
+    <!-- History -->
+    <div class="hist-title">History</div>
+    <div id="d-history"><div class="empty">No history yet. Save entries to see them here.</div></div>
+
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+// ── Firebase init ──────────────────────────────────
+firebase.initializeApp({
+  apiKey: "AIzaSyAcirrvSgPgb4zBkSMJg8G0WIqQdqqtOsM",
+  authDomain: "consulate-d6691.firebaseapp.com",
+  projectId: "consulate-d6691",
+  storageBucket: "consulate-d6691.firebasestorage.app",
+  messagingSenderId: "459011165720",
+  appId: "1:459011165720:web:40d50df68038219f49fd6d"
+});
+var db = firebase.firestore();
+
+// ── Helpers ────────────────────────────────────────
+function todayKey() {
+  var d = new Date();
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
+}
+function niceDate(key) {
+  var p = key.split("-").map(Number);
+  return new Date(p[0],p[1]-1,p[2]).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"});
+}
+function getUid() {
+  var uid = localStorage.getItem("ll_uid");
+  if (!uid) { uid = "u"+Date.now().toString(36); localStorage.setItem("ll_uid",uid); }
+  return uid;
+}
+
+// ── Pages ──────────────────────────────────────────
+function goTo(id) {
+  ["page-onboard","page-dash"].forEach(function(p){
+    document.getElementById(p).classList.remove("show");
+  });
+  document.getElementById(id).classList.add("show");
+}
+
+// ── State ──────────────────────────────────────────
+var user = null;
+var rows = [];
+
+// ── Splash → Init ──────────────────────────────────
+window.onload = function() {
+  // start progress bar
+  setTimeout(function(){ document.getElementById("sbar").style.width="100%"; }, 50);
+
+  // after 3s hide splash and start app
+  setTimeout(function(){
+    document.getElementById("page-splash").style.display = "none";
+    startApp();
+  }, 3000);
+};
+
+async function startApp() {
+  var uid = getUid();
+  try {
+    var snap = await db.collection("users").doc(uid).get();
+    if (snap.exists) {
+      user = Object.assign({id:uid}, snap.data());
+      await openDash();
+    } else {
+      goTo("page-onboard");
+    }
+  } catch(e) {
+    console.error(e);
+    goTo("page-onboard");
+  }
+}
+
+// ── Onboarding ─────────────────────────────────────
+document.getElementById("btn-start").addEventListener("click", async function() {
+  var name = document.getElementById("f-name").value.trim();
+  var sw   = parseFloat(document.getElementById("f-sw").value);
+  var ht   = parseFloat(document.getElementById("f-ht").value);
+  var gw   = parseFloat(document.getElementById("f-gw").value);
+  var err  = document.getElementById("f-err");
+  err.textContent = "";
+
+  if (!name)              { err.textContent = "Enter your name.";           return; }
+  if (isNaN(sw)||sw<30)   { err.textContent = "Enter a valid weight.";      return; }
+  if (isNaN(ht)||ht<100)  { err.textContent = "Enter a valid height.";      return; }
+  if (isNaN(gw)||gw<30)   { err.textContent = "Enter a valid goal weight."; return; }
+
+  var btn = document.getElementById("btn-start");
+  btn.disabled = true;
+  btn.querySelector("span").textContent = "Saving...";
+
+  try {
+    var uid  = getUid();
+    var data = { name:name, startWeight:sw, height:ht, goalWeight:gw };
+    await db.collection("users").doc(uid).set(data);
+    user = Object.assign({id:uid}, data);
+    await openDash();
+  } catch(e) {
+    console.error(e);
+    err.textContent = "Could not save — check your internet.";
+    btn.disabled = false;
+    btn.querySelector("span").textContent = "Start tracking →";
+  }
+});
+
+// ── Dashboard ──────────────────────────────────────
+async function openDash() {
+  goTo("page-dash");
+  renderProfile();
+  await loadEntries();
+  fillTodayForm();
+}
+
+function renderProfile() {
+  document.getElementById("d-ava").textContent  = user.name.charAt(0).toUpperCase();
+  document.getElementById("d-name").textContent = user.name;
+  var bmi = (user.startWeight / Math.pow(user.height/100,2)).toFixed(1);
+  document.getElementById("d-meta").textContent = user.height+"cm · BMI "+bmi+" at start";
+  document.getElementById("d-start").textContent = user.startWeight+" kg";
+  document.getElementById("d-goal").textContent  = user.goalWeight+" kg";
+}
+
+async function loadEntries() {
+  try {
+    var snap = await db.collection("users").doc(user.id)
+      .collection("entries").orderBy("date","desc").get();
+    rows = snap.docs.map(function(d){ return d.data(); });
+    renderStats();
+    renderHistory();
+  } catch(e) { console.error(e); }
+}
+
+function renderStats() {
+  document.getElementById("d-days").textContent = rows.length;
+  var latest = rows.find(function(r){ return r.weight; });
+  var cw = latest ? latest.weight : user.startWeight;
+  document.getElementById("d-cur").textContent = cw+" kg";
+  var delta = +(cw - user.startWeight).toFixed(1);
+  var badge = document.getElementById("d-badge");
+  document.getElementById("d-delta").textContent = (delta>0?"+":"")+delta+" kg";
+  badge.className = "badge "+(delta<0?"loss":delta>0?"gain":"");
+}
+
+function renderHistory() {
+  var today = todayKey();
+  var past  = rows.filter(function(r){ return r.date !== today; });
+  var cont  = document.getElementById("d-history");
+  if (!past.length) {
+    cont.innerHTML = '<div class="empty">No past entries yet. Save today\'s entry — it will appear here tomorrow.</div>';
+    return;
+  }
+  var asc = past.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
+  cont.innerHTML = past.map(function(r, idx) {
+    var ai  = asc.findIndex(function(x){ return x.date===r.date; });
+    var pw  = ai>0 ? (asc[ai-1].weight||user.startWeight) : user.startWeight;
+    var dv  = r.weight!=null ? +(r.weight-pw).toFixed(1) : null;
+    var ds  = dv!=null ? '<span class="'+(dv<0?"ddown":dv>0?"dup":"ddown")+'">'+(dv>0?"+":"")+dv+" kg</span>" : "";
+    var isF = idx === past.length-1;
+    return '<div class="trow">'+
+      '<div class="tl-side"><div class="tdot'+(isF?" first":"")+'"></div>'+(isF?"":'<div class="tline"></div>')+'</div>'+
+      '<div class="tcard">'+
+        '<div class="thead"><span class="tday">Day '+(ai+1)+'</span><span class="tdate">'+niceDate(r.date)+'</span></div>'+
+        '<div class="tbody">'+
+          '<div><div class="tm-label">Weight</div><div class="tm-val">'+(r.weight!=null?r.weight+" kg":"—")+" "+ds+'</div></div>'+
+          '<div><div class="tm-label">Calories</div><div class="tm-val">'+(r.calories!=null?r.calories.toLocaleString()+" kcal":"—")+'</div></div>'+
+        '</div>'+
+      '</div></div>';
+  }).join("");
+}
+
+function fillTodayForm() {
+  var today = todayKey();
+  document.getElementById("d-today-date").textContent = niceDate(today);
+  var te = rows.find(function(r){ return r.date===today; });
+  if (te) {
+    if (te.weight!=null)   document.getElementById("t-w").value = te.weight;
+    if (te.calories!=null) document.getElementById("t-c").value = te.calories;
+  }
+}
+
+// ── Save today ─────────────────────────────────────
+document.getElementById("btn-save").addEventListener("click", async function() {
+  var w = parseFloat(document.getElementById("t-w").value);
+  var c = parseFloat(document.getElementById("t-c").value);
+  if (isNaN(w) && isNaN(c)) { toast("Enter weight or calories first."); return; }
+
+  var btn   = document.getElementById("btn-save");
+  var today = todayKey();
+  btn.disabled = true;
+  btn.textContent = "Saving...";
+
+  var past   = rows.filter(function(r){ return r.date < today; });
+  var exists = rows.find(function(r){ return r.date===today; });
+  var dayNum = exists ? (exists.dayNumber||past.length+1) : past.length+1;
+
+  var data = {
+    date:      today,
+    weight:    isNaN(w) ? null : w,
+    calories:  isNaN(c) ? null : c,
+    dayNumber: dayNum
+  };
+
+  try {
+    await db.collection("users").doc(user.id)
+      .collection("entries").doc(today).set(data, {merge:true});
+
+    var i = rows.findIndex(function(r){ return r.date===today; });
+    if (i>=0) rows[i] = Object.assign({},rows[i],data);
+    else      rows.unshift(data);
+
+    renderStats();
+    renderHistory();
+    fillTodayForm();
+    toast("Saved!");
+  } catch(e) {
+    console.error(e);
+    toast("Save failed — check internet.");
+  }
+
+  btn.disabled = false;
+  btn.textContent = "✓ Save today";
+});
+
+function toast(msg) {
+  document.getElementById("toast-msg").textContent = msg;
+  var t = document.getElementById("toast");
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2500);
+}
+
+// ── Logout ─────────────────────────────────────────
+document.getElementById("btn-logout").addEventListener("click", function() {
+  if (!confirm("Sign out?")) return;
+  localStorage.removeItem("ll_uid");
+  user = null; rows = [];
+  ["f-name","f-sw","f-ht","f-gw"].forEach(function(id){ document.getElementById(id).value=""; });
+  document.getElementById("f-err").textContent = "";
+  goTo("page-onboard");
+});
+</script>
 </body>
 </html>
